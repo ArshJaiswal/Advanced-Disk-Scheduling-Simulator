@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disk Scheduling Algorithm Visualizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles-background"></div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hdd"></i> Disk Scheduling Simulator
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features"><i class="fas fa-star"></i> Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#simulator"><i class="fas fa-sliders-h"></i> Simulator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+                <button class="btn btn-theme-toggle ms-3">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1>Visualize Disk Scheduling Algorithms</h1>
+                    <p class="lead">An interactive tool to understand how different disk scheduling algorithms optimize seek time with animated visualizations</p>
+                    <div class="hero-buttons">
+                        <a href="#simulator" class="btn btn-success btn-lg me-3">
+                            <i class="fas fa-play"></i> Try Simulator
+                        </a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-book"></i> Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 hero-image">
+                    <div class="disk-visualization">
+                        <div class="disk-track">
+                            <div class="disk-head"></div>
+                            <div class="disk-request" style="left: 20%"></div>
+                            <div class="disk-request" style="left: 50%"></div>
+                            <div class="disk-request" style="left: 80%"></div>
+                        </div>
+                        <div class="disk-legend">
+                            <div><span class="legend-head"></span> Disk Head</div>
+                            <div><span class="legend-request"></span> Disk Request</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Supported Algorithms</h2>
+                <p class="section-subtitle">Explore different disk scheduling techniques</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card fcfs">
+                        <div class="feature-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <h3>FCFS</h3>
+                        <p>First Come First Serve scheduling</p>
+                        <div class="feature-badge">Simple</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card sstf">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>SSTF</h3>
+                        <p>Shortest Seek Time First</p>
+                        <div class="feature-badge">Efficient</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card scan">
+                        <div class="feature-icon">
+                            <i class="fas fa-arrows-alt-v"></i>
+                        </div>
+                        <h3>SCAN</h3>
+                        <p>Elevator Algorithm</p>
+                        <div class="feature-badge">Bi-directional</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card cscan">
+                        <div class="feature-icon">
+                            <i class="fas fa-redo"></i>
+                        </div>
+                        <h3>C-SCAN</h3>
+                        <p>Circular SCAN</p>
+                        <div class="feature-badge">Uniform</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulator Section -->
+    <section id="simulator" class="simulator-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <br>
+                <br>
+                <h2>Interactive Simulator</h2>
+                <p class="section-subtitle">Configure disk requests and visualize scheduling in real-time</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="simulator-card input-card">
+                        <div class="card-header">
+                            <i class="fas fa-plus-circle"></i> Request Input
+                        </div>
+                        <div class="card-body">
+                            <div id="request-input-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-crosshairs"></i> Request Position (0-199)</label>
+                                    <input type="number" class="form-control" id="request-position" min="0" max="199" placeholder="Cylinder position">
+                                </div>
+                                <button id="add-request" class="btn btn-outline-light w-100 mb-3">
+                                    <i class="fas fa-plus"></i> Add Request
+                                </button>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-location-arrow"></i> Initial Head Position</label>
+                                    <input type="number" class="form-control" id="initial-head" min="0" max="199" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-arrows-alt-h"></i> Track Size</label>
+                                    <input type="number" class="form-control" id="track-size" min="1" value="200" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-project-diagram"></i> Scheduling Algorithm</label>
+                                    <select class="form-select" id="algorithm">
+                                        <option value="fcfs">First Come First Serve (FCFS)</option>
+                                        <option value="sstf">Shortest Seek Time First (SSTF)</option>
+                                        <option value="scan">SCAN (Elevator)</option>
+                                        <option value="cscan">C-SCAN (Circular SCAN)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-arrow-up"></i> Initial Direction (for SCAN)</label>
+                                    <select class="form-select" id="initial-direction">
+                                        <option value="right">Right (Increasing)</option>
+                                        <option value="left">Left (Decreasing)</option>
+                                    </select>
+                                </div>
+                                <button id="simulate" class="btn btn-success w-100 mb-2">
+                                    <i class="fas fa-play"></i> Simulate
+                                </button>
+                                <button id="reset" class="btn btn-danger w-100">
+                                    <i class="fas fa-trash"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulator-card request-table-card">
+                        <div class="card-header">
+                            <i class="fas fa-table"></i> Request Queue
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="request-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Position</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="request-table-body">
+                                        <!-- Requests will be added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-8">
+                    <div class="simulator-card visualization-card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i> Visualization
+                        </div>
+                        <div class="card-body">
+                            <div class="disk-simulation-container">
+                                <div class="disk-track-container">
+                                    <div class="disk-track" id="disk-track">
+                                        <div class="disk-head" id="disk-head"></div>
+                                        <!-- Requests will be added here dynamically -->
+                                    </div>
+                                    <div class="disk-scale">
+                                        <span>0</span>
+                                        <span>25</span>
+                                        <span>50</span>
+                                        <span>75</span>
+                                        <span>100</span>
+                                        <span>125</span>
+                                        <span>150</span>
+                                        <span>175</span>
+                                        <span>199</span>
+                                    </div>
+                                </div>
+                                <div class="seek-sequence-container">
+                                    <h5>Seek Sequence:</h5>
+                                    <div id="seek-sequence" class="seek-sequence">
+                                        <!-- Seek sequence will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulator-card results-card">
+                        <div class="card-header">
+                            <i class="fas fa-calculator"></i> Performance Metrics
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 metric-card">
+                                    <div class="metric-value" id="total-seek-time">0</div>
+                                    <div class="metric-label">Total Seek Time</div>
+                                </div>
+                                <div class="col-md-4 metric-card">
+                                    <div class="metric-value" id="avg-seek-time">0</div>
+                                    <div class="metric-label">Average Seek Time</div>
+                                </div>
+                                <div class="col-md-4 metric-card">
+                                    <div class="metric-value" id="throughput">0</div>
+                                    <div class="metric-label">Throughput</div>
+                                </div>
+                            </div>
+                            <div class="algorithm-comparison mt-3">
+                                <h5>Algorithm Comparison:</h5>
+                                <canvas id="comparison-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>About This Project</h2>
+                    <p class="lead">Understanding disk scheduling algorithms is crucial for operating system performance optimization.</p>
+                    <p>This visualizer helps students and professionals understand how different disk scheduling algorithms work by providing interactive simulations with real-time visualization of disk head movement and performance metrics.</p>
+                    <p>The project demonstrates how different algorithms can significantly impact total seek time and overall disk I/O performance.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="accordion" id="aboutAccordion">
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#whatIsDiskScheduling">
+                                    What is Disk Scheduling?
+                                </button>
+                            </h3>
+                            <div id="whatIsDiskScheduling" class="accordion-collapse collapse show" data-bs-parent="#aboutAccordion">
+                                <div class="accordion-body">
+                                    Disk scheduling is done by operating systems to schedule I/O requests arriving for the disk. The goal is to minimize the seek time and maximize the disk bandwidth utilization.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#whySstf">
+                                    Why use SSTF over FCFS?
+                                </button>
+                            </h3>
+                            <div id="whySstf" class="accordion-collapse collapse" data-bs-parent="#aboutAccordion">
+                                <div class="accordion-body">
+                                    SSTF (Shortest Seek Time First) selects the request with the minimum seek time from the current head position. While FCFS is simple, SSTF can significantly reduce average response time by serving nearby requests first.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Disk Scheduling Visualizer</h5>
+                    <p>An educational tool for operating system concepts</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#simulator"><i class="fas fa-sliders-h"></i> Simulator</a></li>
+                        <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Disk Scheduling Visualizer. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
